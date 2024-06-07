@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+		integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="css/style.css" />
+	<title>streamOn App</title>
+</head>
+
+<body>
+	<div class="join-container">
+		<header class="join-header">
+			<h1><i class="fa-solid fa-laptop"></i> streamOn</h1>
+		</header>
+		<main class="join-main">
+			<form id="joinForm">
+				<div class="form-control">
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username" placeholder="Enter username..." required />
+				</div>
+				<div class="form-control">
+					<label for="sessionType">Session Type</label>
+					<select id="sessionType" onchange="updateAction()">
+						<option value="watchParty">Watch Party</option>
+						<option value="pomodoro">Pomodoro Session</option>
+					</select>
+				</div>
+				<div class="form-control">
+					<label for="room">Room</label>
+					<input type="text" name="room" id="room" placeholder="Enter room ID..." value="" required />
+				</div>
+
+				<button type="submit" class="btn">Join Session</button>
+		</main>
+	</div>
+	<script>
+		const roomInput = document.getElementById('room');
+		var length = 5;
+		var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		var result = '';
+		for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+		roomInput.value = result;
+
+		function updateAction() {
+			const sessionType = document.getElementById('sessionType').value;
+			const form = document.getElementById('joinForm');
+			if (sessionType === 'watchParty') {
+				form.action = 'chat.html';
+			} else if (sessionType === 'pomodoro') {
+				form.action = 'pomodoro.html';
+			}
+		}
+
+		// Automatically update action on page load
+		updateAction();
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"
+		integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>

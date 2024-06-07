@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css">
+    <title>streamON App</title>
+</head>
+
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1><i class="fa-solid fa-laptop"></i> streamOn</h1>
+            <a href="index.html" class="btn">Leave Room</a>
+        </header>
+        <main class="chat-main">
+            <div class="chat-sidebar">
+                <h3><i class="fas fa-comments"></i> Room Name:</h3>
+                <h2 id="room-name"></h2>
+                <h3><i class="fas fa-users"></i> Users</h3>
+                <ul id="users"></ul>
+            </div>
+            <div class="chat-messages"></div>
+        </main>
+        <div class="chat-form-container">
+            <form id="chat-form">
+                <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
+                <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+            </form>
+        </div>
+
+        <div class="form-control">
+            <input type="file" class="form-control fileInput" id="file-id" onchange="onChangeFile();">
+            <br>
+            <p id="filePathText"></p>
+        </div>
+
+        <div class="audio audio-player-conatiner">
+            <audio id="audio-player" controls>
+                <source id="audioSrc" src="" type="audio/mpeg" />
+            </audio>
+        </div>
+
+        <!-- <div class="pomodoro-conatiner">
+            <p id="work" class="label">Work:</p>
+            <p id="break" class="label">Break:</p>
+            <p id="cycles" class="label">Cycles:</p> -->
+            <!--Work Timer-->
+            <!-- <div class="timers-container">
+                <div id="work-timer" class="timer">
+                    <p id="w_minutes">25</p>
+                    <p class="semicolon">:</p>
+                    <p id="w_seconds">00</p>
+                </div>
+            
+                <p id="counter" class="timer">0</p>
+            
+                <div id="break-timer" class="timer">
+                    <p id="b_minutes">05</p>
+                    <p class="semicolon">:</p>
+                    <p id="b_seconds">00</p>
+                </div>
+            </div>
+            <button id="start" class="btn">Start</button>
+            <button id="stop" class="btn">Pause</button>
+            <button id="reset" class="btn">Reset</button>
+        </div>
+    </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js"
+        integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"
+        integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/pomo.js"></script>
+</body>
+
+</html>
