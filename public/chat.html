@@ -23,6 +23,7 @@
         <ul id="users"></ul>
       </div>
       <div class="chat-messages"></div>
+      
     </main>
     <div class="chat-form-container">
       <form id="chat-form">
@@ -36,25 +37,12 @@
         <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
       </form>
     </div>
-
     <div class="form-control">
       <input type="file" class="form-control fileInput" id="file-id" onchange="onChangeFile();">
       <br>
       <p id="filePathText"></p>
     </div>
-
-    <!-- <div class="youtube-url-container">
-      <input id = "youtube_url_box" placeholder="Enter a youtube link">
-		  <button id = "button_url_update"> Stream </button>
-    </div>
-
-    <div class="yt video-plyaer">
-      <video width="560" height="420" muted = "muted" controls controlsList="nodownload" >
-        <source id = "running_src" type="video/mp4">
-      </video>
-    </div> -->
-
-    <div class="video video-player-conatiner">
+    <div class="video video-player-container">
       <video
         id="video-player"
         class="video-js vjs-big-play-centered"
@@ -64,13 +52,23 @@
       >
         <source id="videoSrc" src="" type="video/mp4" />
       </video>
+      <!-- Video Chat Section -->
+    <div id="video-streams"></div>
+    <!-- Stream Controls -->
+    <div id="stream-controls" style="display: none;">
+      <button id="mic-btn">Mic off</button>
+      <button id="camera-btn">Camera off</button>
+      <button id="leave-btn">Leave Stream</button>
     </div>
-
+    <button id="join-btn">Join Stream</button>
+    </div>
+    
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js" integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js" integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/AgoraRTC_N-4.21.0.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
