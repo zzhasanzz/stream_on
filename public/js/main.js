@@ -5,6 +5,8 @@ const rtmUid = String(Math.floor(Math.random() * 2032))
 
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
+const fileInput = document.getElementById('file-input');
+const sendFileBtn = document.getElementById('send-file-btn');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 const videoPlayer = document.getElementById("video-player");
@@ -79,6 +81,17 @@ socket.on('message', message => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
+// File shared
+socket.on('fileShared', ({ username, fileUrl, fileName }) => {
+  const div = document.createElement('div');
+  div.classList.add('message');
+  div.innerHTML = `<p class="meta">${username}</p>
+  <p class="text"><a href="${fileUrl}" target="_blank">${fileName}</a></p>`;
+  document.querySelector('.chat-messages').appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+
 //send control commands to server
 socket.on('controlCommand', data => {
   if (data.message === 'play') {
@@ -103,6 +116,24 @@ chatForm.addEventListener('submit', e => {
   e.target.elements.msg.value = '';
   e.target.elements.msg.focus();
 });
+
+// File upload
+sendFileBtn.addEventListener('click', () => {
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      socket.emit('fileUpload', {
+        data: e.target.result,
+        name: file.name,
+        type: file.type
+      });
+    };
+    reader.readAsArrayBuffer(file);
+    fileInput.value = ''; // Clear the file input
+  }
+});
+
 
 //output message to DOM
 function outputMessage(message) {
@@ -141,7 +172,7 @@ const initRtm = async (name) => {
 
   await rtmClient.addOrUpdateLocalUserAttributes({ 'name': name, 'userRtcUid': rtcUid.toString() });
 
-  //getChannelMembers()
+  getChannelMembers()
 
   window.addEventListener('beforeunload', leaveRtmChannel)
 
@@ -169,8 +200,8 @@ const initRtc = async () => {
   if (!player) {
       player = document.createElement('div');
       player.id = `user-container-${rtcUid}`;
-      player.className = 'video-container';
-      player.innerHTML = `<div class="video-player" id="user-${rtcUid}"></div>`;
+      player.className = 'video-container-2';
+      player.innerHTML = `<div class="video-player-2" id="user-${rtcUid}"></div>`;
       document.getElementById('video-streams').appendChild(player);
   }
 
@@ -197,8 +228,8 @@ let handleUserPublished = async (user, mediaType) => {
       if (!player) {
           player = document.createElement('div');
           player.id = `user-container-${user.uid}`;
-          player.className = 'video-container';
-          player.innerHTML = `<div class="video-player" id="user-${user.uid}"></div>`;
+          player.className = 'video-container-2';
+          player.innerHTML = `<div class="video-player-2" id="user-${user.uid}"></div>`;
           document.getElementById('video-streams').appendChild(player);
       }
       user.videoTrack.play(`user-${user.uid}`);
@@ -214,6 +245,10 @@ let handleUserPublished = async (user, mediaType) => {
 
 let handleUserLeft = async (user) => {
   delete remoteUsers[user.uid]
+  let player = document.getElementById(`user-container-${user.uid}`);
+  if (player) {
+      player.remove();
+  }
 }
 
 let handleMemberJoined = async (MemberId) => {
@@ -250,30 +285,55 @@ let getChannelMembers = async () => {
 
 
 let toggleMic = async (e) => {
+  // Ensure e is the button itself
+  let button = e.target.tagName === 'BUTTON' ? e.target : e.target.closest('button');
+  const icon = button.querySelector('i');
+  
   if (localTracks[0].muted) {
-    await localTracks[0].setMuted(false)
-    e.target.innerText = 'Mic on'
-    e.target.style.backgroundColor = 'cadetblue'
+    await localTracks[0].setMuted(false);
+    icon.className = 'fas fa-microphone';
+    button.style.backgroundColor = 'cadetblue';
   } else {
-    await localTracks[0].setMuted(true)
-    e.target.innerText = 'Mic off'
-    e.target.style.backgroundColor = '#EE4B2B'
+    await localTracks[0].setMuted(true);
+    icon.className = 'fas fa-microphone-slash';
+    button.style.backgroundColor = '#EE4B2B';
   }
-}
+};
 
 let toggleCamera = async (e) => {
+  // Ensure e is the button itself
+  let button = e.target.tagName === 'BUTTON' ? e.target : e.target.closest('button');
+  const icon = button.querySelector('i');
+  
   if (localTracks[1].muted) {
-    await localTracks[1].setMuted(false)
-    e.target.innerText = 'Camera on'
-    e.target.style.backgroundColor = 'cadetblue'
+    await localTracks[1].setMuted(false);
+    icon.className = 'fas fa-video';
+    button.style.backgroundColor = 'cadetblue';
   } else {
-    await localTracks[1].setMuted(true)
-    e.target.innerText = 'Camera off'
-    e.target.style.backgroundColor = '#EE4B2B'
+    await localTracks[1].setMuted(true);
+    icon.className = 'fas fa-video-slash';
+    button.style.backgroundColor = '#EE4B2B';
   }
-}
+};
+
+let resetButtons = () => {
+  let micButton = document.getElementById('mic-btn'); 
+  let cameraButton = document.getElementById('camera-btn'); 
+
+  micButton.querySelector('i').className = 'fas fa-microphone';
+  micButton.style.backgroundColor = 'cadetblue';
+
+  cameraButton.querySelector('i').className = 'fas fa-video';
+  cameraButton.style.backgroundColor = 'cadetblue';
+};
+
+
 
 const enterRoom = async () => {
+
+  resetButtons()
+
+  document.getElementById('stream-image').style.display = 'none';
 
   window.history.replaceState(null, null, `?room=${roomId}`);
 
@@ -292,6 +352,7 @@ let leaveRtmChannel = async () => {
 }
 
 let leaveRoom = async () => {
+  document.getElementById('stream-image').style.display = 'block';
   for(let i = 0; localTracks.length > i; i++){
     localTracks[i].stop()
     localTracks[i].close()

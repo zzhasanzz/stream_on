@@ -8,11 +8,44 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="css/style.css">
   <title>streamON App</title>
+  <style>
+    .form-control input[type="file"] {
+        display: block;
+        width: 675px;
+        padding: 8px;
+        margin-top: 5px;
+        margin-left: 8px;
+        border: 1px solid var(--dark-color-b);
+        background-color: var(--light-color);
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: "comic Sans";
+        color: var(--dark-color-a);
+        transition: border-color 0.3s, box-shadow 0.3s;
+        opacity: 0.8;
+    }
+
+    .form-control input[type="file"]:focus {
+        border-color: var(--success-color);
+        box-shadow: 0 0 8px var(--success-color);
+    }
+
+    #filePathText {
+        margin-top: 5px;
+        color: var(--dark-color-b);
+        font-size: 14px;
+        font-family: 'Roboto', sans-serif;
+        word-wrap: break-word;
+    }
+
+    .btn i {
+        margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
-  <div class="chat-container">
     <header class="chat-header">
-      <h1><i class="fa-solid fa-laptop"></i> streamOn</h1>
+      <h1 class = "logo"><i class="fa-solid fa-laptop"></i> streamOn</h1>
       <a href="index.html" class="btn">Leave Room</a>
     </header>
     <main class="chat-main">
@@ -34,37 +67,47 @@
           required
           autocomplete="off"
         />
-        <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+        <button class="btn"><i class="fas fa-paper-plane"></i></button>
       </form>
+      <input type="file" id="file-input">
+      <button id="send-file-btn" class="btn"><i class="fas fa-paperclip"></i> Send File</button>
     </div>
-    <div class="form-control">
-      <input type="file" class="form-control fileInput" id="file-id" onchange="onChangeFile();">
-      <br>
-      <p id="filePathText"></p>
-    </div>
-    <div class="video video-player-container">
-      <video
-        id="video-player"
-        class="video-js vjs-big-play-centered"
-        controls
-        preload="metadata"
-        data-setup='{}'
-      >
-        <source id="videoSrc" src="" type="video/mp4" />
-      </video>
-      <!-- Video Chat Section -->
-    <div id="video-streams"></div>
-    <div id="members"></div>
-    <!-- Stream Controls -->
-    <div id="stream-controls" style="display: none;">
-      <button id="mic-btn">Mic off</button>
-      <button id="camera-btn">Camera off</button>
-      <button id="leave-btn">Leave Stream</button>
-    </div>
-    <button id="join-btn">Join Stream</button>
-    </div>
+
+    <section class="video-section">
+      <div class="video-container">
+          <div class="video-item">
+              <video
+                  id="video-player"
+                  class="video-js vjs-big-play-centered"
+                  controls
+                  preload="metadata"
+                  data-setup='{}'
+              >
+                  <source id="videoSrc" src="" type="video/mp4" />
+              </video>
+          </div>
+          <div class="form-control">
+              <input type="file" class="form-control fileInput" id="file-id" onchange="onChangeFile();">
+              <br>
+              <p id="filePathText"></p>
+          </div>
+      </div>
+  </section>
+
+  <section class="video-conference">
+    <div class="video-container-2">
+      <img id="stream-image" src="css/totoro_umbrella.png" alt="Totoro Umbrella">
+      <div id="video-streams"></div>
+      <div id="stream-controls" style="display: none;">
+          <button id="mic-btn" class="btn"><i class="fas fa-microphone"></i></button>
+          <button id="camera-btn" class="btn"><i class="fas fa-video"></i></button>
+          <button id="leave-btn" class="btn"><i class="fas fa-right-from-bracket"></i></button>
+      </div>
+      <button id="join-btn" class="btn"><i class="fas fa-video"></i></button>
+  </div>    
+  </section>
+
     
-  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.12.1/qs.min.js" integrity="sha512-vuLOE4Fh9lfxaN9n81Vl1HwrqMYz9WKoNmsHNC7Hz7OWX4k4O7FjCyQ1tQ82RJExao+Fas40RLiS5PCfVRGgnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
