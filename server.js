@@ -25,7 +25,7 @@ const server = http.createServer(app);
 // Initialize socket.io with CORS configuration
 const io = socketio(server, {
     cors: {
-        origin: ["https://stream-on-flax.vercel.app"],
+        origin: ["https://stream-on.onrender.com"],
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type'],
         credentials: true,
@@ -112,6 +112,5 @@ io.on('connection', (socket) => {
 });
 
 // Start server
-server.listen(3000, function () {
-    console.log("server listening on port 3000");
-});
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
